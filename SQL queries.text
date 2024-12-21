@@ -1,0 +1,70 @@
+CREATE TABLE Doctors (
+    doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+    doc_name VARCHAR(100) NOT NULL,
+    specialization VARCHAR(100) NOT NULL,
+    doc_phone VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Patients (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    p_name VARCHAR(100) NOT NULL,
+    age INT NOT NULL,
+    gender VARCHAR(20) NOT NULL,
+    p_phone VARCHAR(20) NOT NULL,
+    doctor_id INT,
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE Departments (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    dep_name VARCHAR(100) NOT NULL,
+    location VARCHAR(100) NOT NULL,
+    doctor_id INT,
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE Appointments (
+    appointment_id INT PRIMARY KEY AUTO_INCREMENT,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    doctor_id INT,
+    patient_id INT,
+    department_id INT,
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (department_id) REFERENCES Departments(department_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+INSERT INTO `Doctors` (`doc_name`, `specialization`, `doc_phone`) VALUES
+(Dr. Alice Smith', 'Cardiology', '123-456-7890'),
+('Dr. Bob Jones', 'Neurology', '234-567-8901'),
+('Dr. Carol White', 'Pediatrics', '345-678-9012'),
+('Dr. David Brown', 'Orthopedics', '456-789-0123'),
+('Dr. Eve Black', 'Dermatology', '567-890-1234');
+
+
+INSERT INTO `Patients` (`p_name`, `age`, `gender`, `p_phone`, `doctor_id`) VALUES
+('John Doe', 35, 'Male', '123-111-2222', 1),
+('Jane Roe', 29, 'Female', '124-222-3333', 2),
+('Jim Beam', 40, 'Male', '125-333-4444', 3),
+('Emily Stone', 25, 'Female', '126-444-5555', 4),
+('Michael Brown', 50, 'Male', '127-555-6666', 5);
+
+
+INSERT INTO `Departments` (`dep_name`, `location`, `doctor_id`) VALUES
+('Cardiology', 'Block A', 1),
+('Neurology', 'Block B', 2),
+('Pediatrics', 'Block C', 3),
+('Orthopedics', 'Block D', 4),
+('Dermatology', 'Block E', 5);
+
+
+INSERT INTO `Appointments` (`date`, `time`, `status`, `doctor_id`, `patient_id`, `department_id`) VALUES
+('2024-12-22', '09:00:00', 'Scheduled', 1, 1, 1),
+('2024-12-23', '10:30:00', 'Completed', 2, 2, 2),
+('2024-12-24', '11:15:00', 'Cancelled', 3, 3, 3),
+('2024-12-25', '14:00:00', 'Scheduled', 4, 4, 4),
+('2024-12-26', '16:45:00', 'Rescheduled', 5, 5, 5);
